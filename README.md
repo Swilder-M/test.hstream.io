@@ -1,5 +1,5 @@
-HStreamDB Docs
-==============
+# HStreamDB Docs
+
 
 Documentation for HStreamDB.
 
@@ -9,7 +9,7 @@ Documentation for HStreamDB.
 Under project root and run:
 
 ```sh
-docker run -it --rm -p 8000:8000 -v ${PWD}:/docs squidfunk/mkdocs-material serve -a 0.0.0.0:8000
+docker run -d --name docs-preview -p 8080:8080 -v $PWD:/docs -w /docs node:14.15.5-alpine3.13 sh -c "yarn && yarn dev"
 ```
 
-Now open <http://127.0.0.1:8000> in your browser.
+Now open <http://127.0.0.1:8080> in your browser.

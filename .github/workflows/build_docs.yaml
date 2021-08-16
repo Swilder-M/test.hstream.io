@@ -1,0 +1,37 @@
+name: build docs
+
+on: 
+  push:
+    branches:
+      - "master"
+
+jobs:
+  build:
+    runs-on: ubuntu-20.04
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: use Node.js
+      uses: actions/setup-node@v1
+        with:
+          node-version: 14.15
+  
+    - name: build
+      env:
+        DOCSBRANCH: master
+        VERSION: latest
+      run: |
+        mkdir -p tmp/en/latest/ && mkdir -p tmp/zh/latest/
+        mv docs/en/* tmp/en/latest/ && mv docs/zh/* tmp/zh/latest/
+        rm -rf docs/* && cp -r tmp/* docs/
+        yarn && yarn build
+
+    - name: use Python
+      uses: actions/setup-python@v2
+        with:
+          python-version: '3.6'
+          architecture: 'x64'
+    - run: pip3 install coscmd
+    - run: coscmd config -a	secrets.COS_ID -s secrets.COS_KEY -b secrets.COS_NAME -r ap-hongkong
+    - run: coscmd upload -r ./.vuepress/dist/* /
