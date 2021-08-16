@@ -33,5 +33,5 @@ jobs:
         python-version: '3.6'
         architecture: 'x64'
     - run: pip3 install coscmd
-    - run: coscmd config -a	secrets.COS_ID -s secrets.COS_KEY -b secrets.COS_NAME -r ap-hongkong
+    - run: coscmd config -a	${{ secrets.COS_ID }} -s ${{ secrets.COS_KEY }} -b ${{ secrets.COS_NAME }} -r ap-hongkong
     - run: coscmd upload -r ./.vuepress/dist/ /
