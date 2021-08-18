@@ -25,7 +25,7 @@ jobs:
         mkdir -p tmp/en/latest/ && mkdir -p tmp/zh/latest/
         mv docs/en/* tmp/en/latest/ && mv docs/zh/* tmp/zh/latest/
         rm -rf docs/* && cp -r tmp/* docs/
-        rm -rf tmp
+        rm -rf tmp && rm ./*.md
         yarn && yarn build
 
     - name: use python
@@ -37,5 +37,5 @@ jobs:
     - name: upload dist
       run: |
         pip3 install coscmd
-        coscmd config -a	${{ secrets.COS_ID }} -s ${{ secrets.COS_KEY }} -b ${{ secrets.COS_NAME }} -r ap-hongkong
+        coscmd config -a	${{ secrets.COS_ID }} -s ${{ secrets.COS_KEY }} -b ${{ secrets.COS_NAME }} -r ${{ secrets.COS_REGION }}
         coscmd upload -r ./.vuepress/dist/ /
