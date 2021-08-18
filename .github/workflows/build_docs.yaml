@@ -3,7 +3,7 @@ name: build docs
 on: 
   push:
     branches:
-      - "master"
+      - "main"
 
 jobs:
   build:
@@ -19,7 +19,7 @@ jobs:
   
     - name: build
       env:
-        DOCSBRANCH: master
+        DOCSBRANCH: main
         VERSION: latest
       run: |
         mkdir -p tmp/en/latest/ && mkdir -p tmp/zh/latest/
