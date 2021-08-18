@@ -1,4 +1,4 @@
-name: build docs
+name: Deploy Docs
 
 on: 
   push:
@@ -6,18 +6,18 @@ on:
       - "main"
 
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-20.04
 
     steps:
     - uses: actions/checkout@v2
 
-    - name: use Node.js
+    - name: use node.js
       uses: actions/setup-node@v1
       with:
         node-version: 14.15
   
-    - name: build
+    - name: build docs
       env:
         DOCSBRANCH: main
         VERSION: latest
@@ -28,11 +28,14 @@ jobs:
         rm -rf tmp
         yarn && yarn build
 
-    - name: use Python
+    - name: use python
       uses: actions/setup-python@v2
       with:
         python-version: '3.6'
         architecture: 'x64'
-    - run: pip3 install coscmd
-    - run: coscmd config -a	${{ secrets.COS_ID }} -s ${{ secrets.COS_KEY }} -b ${{ secrets.COS_NAME }} -r ap-hongkong
-    - run: coscmd upload -r ./.vuepress/dist/ /
+
+    - name: upload dist
+      run: |
+        pip3 install coscmd
+        coscmd config -a	${{ secrets.COS_ID }} -s ${{ secrets.COS_KEY }} -b ${{ secrets.COS_NAME }} -r ap-hongkong
+        coscmd upload -r ./.vuepress/dist/ /
