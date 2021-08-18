@@ -25,6 +25,7 @@ jobs:
         mkdir -p tmp/en/latest/ && mkdir -p tmp/zh/latest/
         mv docs/en/* tmp/en/latest/ && mv docs/zh/* tmp/zh/latest/
         rm -rf docs/* && cp -r tmp/* docs/
+        rm -rf tmp
         yarn && yarn build
 
     - name: use Python
