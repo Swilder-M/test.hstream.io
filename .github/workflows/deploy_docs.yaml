@@ -39,3 +39,11 @@ jobs:
         pip3 install coscmd
         coscmd config -a	${{ secrets.COS_ID }} -s ${{ secrets.COS_KEY }} -b ${{ secrets.COS_NAME }} -r ${{ secrets.COS_REGION }}
         coscmd upload -r ./.vuepress/dist/ /
+
+    - name: flush CDN
+      run: |
+        pip3 install tccli
+        tccli configure set secretId ${{ secrets.COS_ID }}
+        tccli configure set secretKey ${{ secrets.COS_KEY }}
+        tccli configure set region ${{ secrets.COS_REGION }}
+        tccli cdn PurgePathCache --Paths '["https://test.hstream.io/"]' --FlushType flush
