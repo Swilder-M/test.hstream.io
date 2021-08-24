@@ -2,8 +2,9 @@ name: Deploy Docs
 
 on: 
   push:
-    branches:
-      - "main"
+    tags:
+      - v*
+      - latest
 
 jobs:
   deploy:
@@ -16,11 +17,11 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: 14.15
-  
+
     - name: build docs
       env:
-        DOCSBRANCH: main
-        VERSION: latest
+        DOCSBRANCH: $( "${{ github.ref }}" -replace "^(.*)/(.*)/" )
+        VERSION: $( "${{ github.ref }}" -replace "^(.*)/(.*)/" )
       run: |
         mkdir -p tmp/en/latest/ && mkdir -p tmp/zh/latest/
         mv docs/en/* tmp/en/latest/ && mv docs/zh/* tmp/zh/latest/
