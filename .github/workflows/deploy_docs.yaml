@@ -24,6 +24,7 @@ jobs:
          echo "VERSION=$VERSION" >> $GITHUB_ENV
     - name: build docs
       run: |
+        echo ${VERSION}
         mkdir -p tmp/en/${VERSION}/ && mkdir -p tmp/zh/${VERSION}/
         mv docs/en/* tmp/en/${VERSION}/ && mv docs/zh/* tmp/zh/${VERSION}/
         rm -rf docs/* && cp -r tmp/* docs/
