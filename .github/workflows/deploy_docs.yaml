@@ -2,9 +2,8 @@ name: Deploy Docs
 
 on: 
   push:
-    tags:
-      - v*
-      - latest
+    branches:
+      - "main"
 
 jobs:
   deploy:
@@ -17,16 +16,14 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: 14.15
-    - name: set env
-      run: |
-         VERSION=${{ github.ref }} | sed -r  "s ^refs/heads/|^refs/tags/(.*) \1 g"
-         echo "DOCSBRANCH=$VERSION" >> $GITHUB_ENV
-         echo "VERSION=$VERSION" >> $GITHUB_ENV
+
     - name: build docs
+      env:
+        DOCSBRANCH: main
+        VERSION: latest
       run: |
-        echo ${VERSION}
-        mkdir -p tmp/en/${VERSION}/ && mkdir -p tmp/zh/${VERSION}/
-        mv docs/en/* tmp/en/${VERSION}/ && mv docs/zh/* tmp/zh/${VERSION}/
+        mkdir -p tmp/en/latest/ && mkdir -p tmp/zh/latest/
+        mv docs/en/* tmp/en/latest/ && mv docs/zh/* tmp/zh/latest/
         rm -rf docs/* && cp -r tmp/* docs/
         rm -rf tmp && rm ./*.md
         yarn && yarn build
@@ -40,7 +37,7 @@ jobs:
     - name: upload dist
       run: |
         pip3 install coscmd
-        coscmd config -a ${{ secrets.COS_ID }} -s ${{ secrets.COS_KEY }} -b ${{ secrets.COS_NAME }} -r ${{ secrets.COS_REGION }}
+        coscmd config -a	${{ secrets.COS_ID }} -s ${{ secrets.COS_KEY }} -b ${{ secrets.COS_NAME }} -r ${{ secrets.COS_REGION }}
         coscmd upload -r ./.vuepress/dist/ /
 
     - name: flush CDN
