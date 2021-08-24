@@ -23,8 +23,8 @@ jobs:
         DOCSBRANCH: $( "${{ github.ref }}" -replace "^(.*)/(.*)/" )
         VERSION: $( "${{ github.ref }}" -replace "^(.*)/(.*)/" )
       run: |
-        mkdir -p tmp/en/latest/ && mkdir -p tmp/zh/latest/
-        mv docs/en/* tmp/en/latest/ && mv docs/zh/* tmp/zh/latest/
+        mkdir -p tmp/en/${{ VERSION }}/ && mkdir -p tmp/zh/${{ VERSION }}/
+        mv docs/en/* tmp/en/${{ VERSION }}/ && mv docs/zh/* tmp/zh/${{ VERSION }}/
         rm -rf docs/* && cp -r tmp/* docs/
         rm -rf tmp && rm ./*.md
         yarn && yarn build
