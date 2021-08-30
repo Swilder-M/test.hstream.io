@@ -32,7 +32,7 @@ jobs:
       run: |
          VERSION=$(echo ${{ github.ref }} | sed -r  "s ^refs/heads/|^refs/tags/(.*) \1 g")
          if [ "$VERSION" = "main" ];then
-         VERSION = "latest"
+         VERSION="latest"
          fi
          echo "DOCSBRANCH=$VERSION" >> $GITHUB_ENV
          echo "VERSION=$VERSION" >> $GITHUB_ENV
