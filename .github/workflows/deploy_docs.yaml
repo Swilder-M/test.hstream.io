@@ -30,11 +30,13 @@ jobs:
 
     - name: set env
       run: |
-         VERSION=$(echo ${{ github.ref }} | sed -r  "s ^refs/heads/|^refs/tags/(.*) \1 g")
-         if [ "$VERSION" = "main" ];then
+         BRANCH=$(echo ${{ github.ref }} | sed -r  "s ^refs/heads/|^refs/tags/(.*) \1 g")
+         if [ "$BRANCH" = "main" ];then
          VERSION="latest"
+         else
+         VERSION=$BRANCH
          fi
-         echo "DOCSBRANCH=$VERSION" >> $GITHUB_ENV
+         echo "DOCSBRANCH=$BRANCH" >> $GITHUB_ENV
          echo "VERSION=$VERSION" >> $GITHUB_ENV
 
     - name: move files
