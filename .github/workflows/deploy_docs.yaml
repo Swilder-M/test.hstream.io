@@ -4,7 +4,8 @@ on:
   push:
     tags:
       - v*
-      - latest
+    branches:
+      - main
 
 jobs:
   deploy:
@@ -30,6 +31,9 @@ jobs:
     - name: set env
       run: |
          VERSION=$(echo ${{ github.ref }} | sed -r  "s ^refs/heads/|^refs/tags/(.*) \1 g")
+         if [ "$VERSION" = "main" ];then
+         VERSION = "latest"
+         fi
          echo "DOCSBRANCH=$VERSION" >> $GITHUB_ENV
          echo "VERSION=$VERSION" >> $GITHUB_ENV
 
