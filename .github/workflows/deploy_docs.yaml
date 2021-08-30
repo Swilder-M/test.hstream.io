@@ -62,9 +62,8 @@ jobs:
       run: |
         pip3 install coscmd
         coscmd config -a ${{ secrets.COS_ID }} -s ${{ secrets.COS_KEY }} -b ${{ secrets.COS_NAME }} -r ${{ secrets.COS_REGION }}
-        coscmd delete -r -f docs || true
-        coscmd delete -r -f docs-assets || true
-        coscmd delete -r -f docs-images || true
+        coscmd delete -r -f docs/en/${VERSION} || true
+        coscmd delete -r -f docs/zh/${VERSION} || true
         coscmd upload -r frontend/.vuepress/dist/ /
 
     - name: flush CDN
